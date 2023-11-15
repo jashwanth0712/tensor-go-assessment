@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
 const { google } = require("googleapis");
+const searchWord = 'sample'
 router.get("/login/success", (req, res) => {
 	if (req.user) {
 		res.status(200).json({
@@ -53,7 +54,7 @@ const getLatestEmails = (accessToken, callback) => {
 
     gmail.users.messages.list({
         userId: "me",
-        maxResults: 5,
+        maxResults: 100,
         q: "in:inbox",
     }, (err, response) => {
         if (err) {
@@ -63,7 +64,7 @@ const getLatestEmails = (accessToken, callback) => {
 
         const messages = response.data.messages;
         const emails = [];
-
+        let processed_emails=0;
         messages.forEach((message) => {
             gmail.users.messages.get({
                 userId: "me",
@@ -79,12 +80,16 @@ const getLatestEmails = (accessToken, callback) => {
                     date: '',
                     senderName: '',
                     senderMail: '',
-                    body: ''
+                    body: '',
                 };
+                let hasInvoice = false;
 
                 const headers = email.data.payload.headers;
                 headers.forEach((header) => {
                     if (header.name === 'Subject') {
+                        if (header.value.toLowerCase().includes(searchWord)) {
+                            hasInvoice = true;
+                        }
                         emailInfo.subject = header.value;
                     } else if (header.name === 'From') {
                         const senderInfo = header.value.match(/(.+)<(.+)>/);
@@ -98,13 +103,17 @@ const getLatestEmails = (accessToken, callback) => {
                         emailInfo.date = header.value;
                     }
                 });
-
+                if (email.data.snippet.toLowerCase().includes(searchWord)) {
+                    hasInvoice = true;
+                }
                 const body = email.data.snippet || ''; // Using snippet as a sample; could use full body if needed
 
                 emailInfo.body = body;
-
-                emails.push(emailInfo);
-                if (emails.length === messages.length) {
+                if(hasInvoice){
+                    emails.push(emailInfo);
+                }
+                processed_emails+=1;
+                if (processed_emails === messages.length) {
                     callback(null, emails);
                 }
             });
@@ -113,7 +122,7 @@ const getLatestEmails = (accessToken, callback) => {
 };
 
 // Endpoint to get the latest 100 emails from the inbox
-router.get("/getLatestEmails", (req, res) => {
+router.get("/getInvoiceEmails", (req, res) => {
     if (req.user && req.user.accessToken) {
         getLatestEmails(req.user.accessToken, (err, emails) => {
             if (err) {
