@@ -5,7 +5,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import "./App.css";
-
+import Navbar from "./components/Navbar";
 function App() {
 	const [user, setUser] = useState(null);
 
@@ -25,6 +25,7 @@ function App() {
 
 	return (
 		<div className="container">
+			<Navbar user={user}/>
 			<Routes>
 				<Route
 					exact

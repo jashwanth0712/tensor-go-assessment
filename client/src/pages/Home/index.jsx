@@ -1,12 +1,12 @@
 import styles from "./styles.module.css";
-
+import Navbar from "../../components/Navbar";
 function Home(userDetails) {
 	const user = userDetails.user;
 	const logout = () => {
 		window.open(`http://localhost:8080/auth/logout`, "_self");
 	};
 	return (
-		<div className={styles.container}>
+		<div >
 			<h1 className={styles.heading}>Home</h1>
 			<div className={styles.form_container}>
 				<div className={styles.left}>

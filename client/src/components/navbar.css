@@ -1,0 +1,73 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 1.5rem 2rem;
+  }
+  
+  .left {
+    flex: 1;
+  }
+  
+  .company-name {
+    font-weight: bold;
+  }
+  
+  .right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .profile-img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    margin-right: 0.625rem; /* Adjust margin as needed */
+  }
+  
+  .profile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  .name {
+    font-weight: bold;
+  }
+  
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0.625rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    margin-top: 0.3125rem;
+  }
+  
+  button:hover {
+    text-decoration: underline;
+  }
+  
