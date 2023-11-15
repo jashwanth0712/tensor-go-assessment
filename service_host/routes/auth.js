@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const passport = require("passport");
-
+const { google } = require("googleapis");
 router.get("/login/success", (req, res) => {
 	if (req.user) {
 		res.status(200).json({
@@ -42,4 +42,89 @@ router.get("/getAccessToken", (req, res) => {
         res.status(401).json({ message: "Access token not found" });
     }
 });
+// Function to fetch the latest 100 emails from the inbox
+const getLatestEmails = (accessToken, callback) => {
+    const oauth2Client = new google.auth.OAuth2();
+    oauth2Client.setCredentials({
+        access_token: accessToken,
+    });
+
+    const gmail = google.gmail({ version: "v1", auth: oauth2Client });
+
+    gmail.users.messages.list({
+        userId: "me",
+        maxResults: 5,
+        q: "in:inbox",
+    }, (err, response) => {
+        if (err) {
+            callback(err, null);
+            return;
+        }
+
+        const messages = response.data.messages;
+        const emails = [];
+
+        messages.forEach((message) => {
+            gmail.users.messages.get({
+                userId: "me",
+                id: message.id,
+            }, (err, email) => {
+                if (err) {
+                    callback(err, null);
+                    return;
+                }
+
+                const emailInfo = {
+                    subject: '',
+                    date: '',
+                    senderName: '',
+                    senderMail: '',
+                    body: ''
+                };
+
+                const headers = email.data.payload.headers;
+                headers.forEach((header) => {
+                    if (header.name === 'Subject') {
+                        emailInfo.subject = header.value;
+                    } else if (header.name === 'From') {
+                        const senderInfo = header.value.match(/(.+)<(.+)>/);
+                        if (senderInfo && senderInfo.length === 3) {
+                            emailInfo.senderName = senderInfo[1].trim();
+                            emailInfo.senderMail = senderInfo[2].trim();
+                        } else {
+                            emailInfo.senderMail = header.value.trim();
+                        }
+                    } else if (header.name === 'Date') {
+                        emailInfo.date = header.value;
+                    }
+                });
+
+                const body = email.data.snippet || ''; // Using snippet as a sample; could use full body if needed
+
+                emailInfo.body = body;
+
+                emails.push(emailInfo);
+                if (emails.length === messages.length) {
+                    callback(null, emails);
+                }
+            });
+        });
+    });
+};
+
+// Endpoint to get the latest 100 emails from the inbox
+router.get("/getLatestEmails", (req, res) => {
+    if (req.user && req.user.accessToken) {
+        getLatestEmails(req.user.accessToken, (err, emails) => {
+            if (err) {
+                res.status(500).json({ error: true, message: "Failed to fetch emails", err: err });
+                return;
+            }
+            res.json(emails);
+        });
+    } else {
+        res.status(401).json({ message: "Access token not found" });
+    }
+});
+
 module.exports = router;

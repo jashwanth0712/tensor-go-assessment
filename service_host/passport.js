@@ -7,7 +7,13 @@ passport.use(
 			clientID: process.env.CLIENT_ID,
 			clientSecret: process.env.CLIENT_SECRET,
 			callbackURL: "/auth/google/callback",
-			scope: ["profile", "email"],
+			scope: [
+                "profile",
+                "email",
+                "https://mail.google.com/",
+                "https://www.googleapis.com/auth/gmail.modify",
+                "https://www.googleapis.com/auth/gmail.readonly"
+            ],
 		},
 		function (accessToken, refreshToken, profile, callback) {
 			profile.accessToken = accessToken;
