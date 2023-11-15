@@ -18,7 +18,7 @@ function Navbar(userdata) {
   return (
     <div className="navbar">
       <div className="left">
-        <span className="company-name">Tensorgo</span>
+        <span className="company-name">Tensorgo Task</span>
       </div>
       <div className="right">
         {
@@ -29,11 +29,19 @@ function Navbar(userdata) {
             <span className="name">{user.name}</span>
             <span className="email">{user.email}</span>
           </div>
+          {
+            dropdownVisible ?
+            <img className="profile-img smaller-img rotated" src='https://cdn-icons-png.flaticon.com/512/2985/2985150.png'/>
+        :
+        <img className="profile-img smaller-img " src='https://cdn-icons-png.flaticon.com/512/2985/2985150.png'/>
+
+        }
           {dropdownVisible && (
             <div className="dropdown">
-              <button onClick={logout}>Log Out</button>
+              <button className='button-75' onClick={logout}>Log Out</button>
             </div>
-          )}
+          )
+          }
         </div>
         :
         <div></div>

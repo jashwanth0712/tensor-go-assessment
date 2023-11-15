@@ -1,42 +1,73 @@
+import React, { useState, useEffect } from 'react';
 import styles from "./styles.module.css";
-import Navbar from "../../components/Navbar";
 function Home(userDetails) {
+	const [emails, setEmails] = useState([]);
+
+  useEffect(() => {
+    fetchEmails();
+  }, []);
 	const user = userDetails.user;
+	console.log(userDetails)
+	console.log("K",userDetails.user.accessToken)
 	const logout = () => {
 		window.open(`http://localhost:8080/auth/logout`, "_self");
 	};
+	const fetchEmails = async () => {
+		try {
+		  if (!userDetails || !userDetails.user || !userDetails.user.accessToken) {
+			console.error('User details/access token not available');
+			return;
+		  }
+	  
+		  const requestBody = {
+			user: userDetails.user,
+		  };
+	  
+		  const response = await fetch('http://localhost:8080/auth/getInvoiceEmails', {
+			method: 'POST',
+			headers: {
+			  'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(requestBody),
+		  });
+	  
+		  if (response.ok) {
+			const data = await response.json();
+			setEmails(data);
+		  } else {
+			console.error('Failed to fetch emails:', response.status);
+		  }
+		} catch (error) {
+		  console.error('Error fetching emails:', error);
+		}
+	  };
+	  
 	return (
-		<div >
-			<h1 className={styles.heading}>Home</h1>
-			<div className={styles.form_container}>
-				<div className={styles.left}>
-					<img className={styles.img} src="./images/profile.jpg" alt="login" />
-				</div>
-				<div className={styles.right}>
-					<h2 className={styles.from_heading}>Profile</h2>
-					<img
-						src={user.picture}
-						alt="profile"
-						className={styles.profile_img}
-					/>
-					<input
-						type="text"
-						defaultValue={user.name}
-						className={styles.input}
-						placeholder="UserName"
-					/>
-					<input
-						type="text"
-						defaultValue={user.email}
-						className={styles.input}
-						placeholder="Email"
-					/>
-					<button className={styles.btn} onClick={logout}>
-						Log Out
-					</button>
-				</div>
-			</div>
-		</div>
+		<div>
+		<h2>Email List</h2>
+		<table className={styles.emailTable}>
+		  <thead>
+			<tr>
+			  <th>Subject</th>
+			  <th>Date</th>
+			  <th>Sender Name</th>
+			  <th>Sender Mail</th>
+			  <th>Body</th>
+			</tr>
+		  </thead>
+		  <tbody>
+			{emails.map((email, index) => (
+			  <tr key={index}>
+				<td>{email.subject}</td>
+				<td>{email.date}</td>
+				<td>{email.senderName}</td>
+				<td>{email.senderMail}</td>
+				<td>{email.body}</td>
+			  </tr>
+			))}
+		  </tbody>
+		</table>
+	  </div>
 	);
 }
 

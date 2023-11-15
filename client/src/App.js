@@ -8,12 +8,15 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 function App() {
 	const [user, setUser] = useState(null);
+	const [auth,setauth]=useState(null)
 
 	const getUser = async () => {
 		try {
 			const url = `http://localhost:8080/auth/login/success`;
 			const { data } = await axios.get(url, { withCredentials: true });
 			setUser(data.user._json);
+			setauth(data.user)
+			console.log("a",data.user.accessToken)
 		} catch (err) {
 			console.log(err);
 		}
@@ -30,7 +33,7 @@ function App() {
 				<Route
 					exact
 					path="/"
-					element={user ? <Home user={user} /> : <Navigate to="/login" />}
+					element={user ? <Home user={auth} /> : <Navigate to="/login" />}
 				/>
 				<Route
 					exact
