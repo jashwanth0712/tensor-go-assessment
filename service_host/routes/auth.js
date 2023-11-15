@@ -34,5 +34,12 @@ router.get("/logout", (req, res) => {
 	req.logout();
 	res.redirect(process.env.CLIENT_URL);
 });
-
+// Endpoint to return the access token
+router.get("/getAccessToken", (req, res) => {
+    if (req.user && req.user.accessToken) {
+        res.json({ access_token: req.user.accessToken });
+    } else {
+        res.status(401).json({ message: "Access token not found" });
+    }
+});
 module.exports = router;

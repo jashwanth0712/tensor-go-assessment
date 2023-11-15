@@ -10,6 +10,7 @@ passport.use(
 			scope: ["profile", "email"],
 		},
 		function (accessToken, refreshToken, profile, callback) {
+			profile.accessToken = accessToken;
 			callback(null, profile);
 		}
 	)
