@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
 const { google } = require("googleapis");
-const searchWord = 'sample'
+const searchWord = '.com'
 router.get("/login/success", (req, res) => {
 	if (req.user) {
 		res.status(200).json({
