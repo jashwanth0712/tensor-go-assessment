@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require('body-parser');
 const passport = require("passport");
 const authRoute = require("./routes/auth");
+const templateRoute = require("./routes/template");
 const cookieSession = require("cookie-session");
 const passportStrategy = require("./passport");
 const app = express();
@@ -28,6 +29,7 @@ app.use(
 );
 
 app.use("/auth", authRoute);
+app.use("/template",templateRoute);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Listenting on port ${port}...`));

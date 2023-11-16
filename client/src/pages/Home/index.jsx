@@ -7,20 +7,12 @@ function Home(userDetails) {
     fetchEmails();
   }, []);
 	const user = userDetails.user;
-	console.log(userDetails)
-	console.log("K",user.accessToken)
-	const logout = () => {
-		window.open(`http://localhost:8080/auth/logout`, "_self");
-	};
 	const fetchEmails = async () => {
 		try {
 		  if (!userDetails || !userDetails.user || !userDetails.user.accessToken) {
 			console.error('User details/access token not available');
 			return;
 		  }
-	  
-		 
-		  console.log("user data ",user)
 		  const response = await fetch('http://localhost:8080/auth/getInvoiceEmails', {
 			method: 'POST',
 			headers: {
