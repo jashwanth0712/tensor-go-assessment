@@ -154,7 +154,7 @@ function Home(userDetails) {
 
     return (
         <div >
-			<div style={{ margin: "30px" }}>
+			<div >
 				
 			</div>
             {isLoading && <h1>Loading...</h1>}
