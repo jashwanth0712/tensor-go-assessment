@@ -3,8 +3,6 @@ const passport = require("passport");
 const { google } = require("googleapis");
 const searchWord = '.com'
 router.get("/login/success", (req, res) => {
-    console.log(req.user)
-
 	if (req.user) {
 		res.status(200).json({
 			error: false,
@@ -125,8 +123,9 @@ const getLatestEmails = (accessToken, callback) => {
 
 // Endpoint to get the latest 100 emails from the inbox
 router.post("/getInvoiceEmails", (req, res) => {
-    if (req.user && req.user.accessToken) {
-        getLatestEmails(req.user.accessToken, (err, emails) => {
+    console.log("recieved ",req.body)
+    if (req.body.accessToken) {
+        getLatestEmails(req.body.accessToken, (err, emails) => {
             if (err) {
                 res.status(500).json({ error: true, message: "Failed to fetch emails", err: err });
                 return;

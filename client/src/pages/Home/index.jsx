@@ -8,7 +8,7 @@ function Home(userDetails) {
   }, []);
 	const user = userDetails.user;
 	console.log(userDetails)
-	console.log("K",userDetails.user.accessToken)
+	console.log("K",user.accessToken)
 	const logout = () => {
 		window.open(`http://localhost:8080/auth/logout`, "_self");
 	};
@@ -19,17 +19,19 @@ function Home(userDetails) {
 			return;
 		  }
 	  
-		  const requestBody = {
-			user: userDetails.user,
-		  };
-	  
+		 
+		  console.log("user data ",user)
 		  const response = await fetch('http://localhost:8080/auth/getInvoiceEmails', {
 			method: 'POST',
 			headers: {
 			  'Content-Type': 'application/json',
 			},
-			body: JSON.stringify(requestBody),
+			body: JSON.stringify({
+			  accessToken: user.accessToken,
+			  // Any other necessary data for the request
+			}),
 		  });
+		  
 	  
 		  if (response.ok) {
 			const data = await response.json();
