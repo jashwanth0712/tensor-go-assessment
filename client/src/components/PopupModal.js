@@ -7,7 +7,7 @@ const PopupModal = ({ email, onClose }) => {
             <div className={styles.modalContent}>
                 <span className={styles.close} onClick={onClose}>&times;</span>
                 <h2>Email Details</h2>
-                <p>{email.body}</p>
+                <p>{email.body}...</p>
             </div>
         </div>
     );

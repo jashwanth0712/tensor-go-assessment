@@ -83,7 +83,6 @@ const getLatestEmails = (accessToken, callback) => {
                     body: '',
                 };
                 let hasInvoice = false;
-
                 const headers = email.data.payload.headers;
                 headers.forEach((header) => {
                     if (header.name === 'Subject') {
@@ -123,7 +122,6 @@ const getLatestEmails = (accessToken, callback) => {
 
 // Endpoint to get the latest 100 emails from the inbox
 router.post("/getInvoiceEmails", (req, res) => {
-    console.log("recieved ",req.body)
     if (req.body.accessToken) {
         getLatestEmails(req.body.accessToken, (err, emails) => {
             if (err) {

@@ -15,7 +15,7 @@ function generateRandomINR() {
 }
 function generateRandomDueDate() {
   const currentDate = new Date();
-  const futureDate = new Date(currentDate.getTime() + Math.random() * 30 * 24 * 60 * 60 * 1000); // Adding up to 30 days in milliseconds
+  const futureDate = new Date(currentDate.getTime() + Math.random() * 30 * 24 * 60 * 60 * 1000 - 5* 24 * 60 * 60 * 1000); // Adding up to 30 days in milliseconds
 
   const formattedDueDate = futureDate.toUTCString(); // Format the date as a string in UTC format
 
@@ -65,10 +65,6 @@ router.post('/sendmails', (req, res) => {
 
     mailOptions.text = `Hi there,
     Your invoice ${randomInvoice} for ${randomINR} is ready for payment.
-    Due to new regulations from the Reserve Bank of India, we are currently unable to automatically charge your credit card. You will instead need to manually pay this invoice using the button below:
-    
-    Pay invoice
-    This invoice link expires after 30 days
     The due date for this invoice is ${randomDueDate}. If the invoice is not paid by this date, your API access may be suspended.
     
     If you have any questions about this invoice, please reach out to ar@openai.com

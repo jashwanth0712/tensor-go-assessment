@@ -1,5 +1,78 @@
 import React, { useState, useEffect } from 'react';
 import styles from "./styles.module.css";
+const extractAmount = (message) => {
+    // Regular expression to find the amount starting with ₹ symbol
+    const regex = /₹([0-9]+(\.[0-9]{1,2})?)/;
+    
+    // Extracting the amount using regex
+    const match = message.match(regex);
+    
+    if (match && match.length > 1) {
+        return match[1]; // Extracted amount
+    } else {
+        return null; // If no match found
+    }
+};
+function extractDueDateFormat(text) {
+	const regex = /\b\d{1,2} [A-Za-z]{3} \d{4}\b/;
+	const match = text.match(regex);
+  
+	if (match) {
+	  const dueDateString = match[0];
+	  const months = {
+		Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+		Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+	  };
+  
+	  const dueDateParts = dueDateString.split(' ');
+	  const day = parseInt(dueDateParts[0], 10);
+	  const month = months[dueDateParts[1]];
+	  const year = parseInt(dueDateParts[2], 10);
+  
+	  const dueDate = new Date(year, month, day);
+	  return dueDate;
+	} else {
+	  return null;
+	}
+  }
+  
+  function calculateDateDifference(text) {
+	const dueDate = extractDueDateFormat(text);
+  
+	if (dueDate) {
+	  const currentDate = new Date();
+	  const timeDifference = dueDate.getTime() - currentDate.getTime();
+	  const dayDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+  
+	  return dayDifference;
+	} else {
+	  return null;
+	}
+  }
+  
+  // Test the function with your provided email body
+  const email = {
+	body: "The due date for this invoice is 14 Dec 2023."
+  };
+  
+  const difference = calculateDateDifference(email.body);
+  console.log("Difference in days:", difference);
+  
+const extractDueDate=(text)=> {
+	// Regular expression to match the date format in the string
+	const regex = /\b\d{1,2} [A-Za-z]{3} \d{4}\b/;
+  
+	// Extracting the date string using the regex
+	const match = text.match(regex);
+  
+	if (match) {
+	  // Extracted date string without the day of the week
+	  const dueDate = match[0];
+	  return dueDate;
+	} else {
+	  return null; // Return null if no match is found
+	}
+  }
 
 function Home(userDetails) {
     const [emails, setEmails] = useState([]);
@@ -80,7 +153,10 @@ function Home(userDetails) {
     };
 
     return (
-        <div style={{ margin: "15vh" }}>
+        <div >
+			<div style={{ margin: "30px" }}>
+				
+			</div>
             {isLoading && <h1>Loading...</h1>}
             {emails.length === 0 && !isLoading && (
                 <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
@@ -92,15 +168,17 @@ function Home(userDetails) {
                 </div>
             )}
             {!selectedEmail && emails.length > 0 && (
-                <main className="table">
+                <main className="table" >
                     <section className="table__body">
                         <table>
                             <thead>
                                 <tr>
                                     <th>Subject</th>
-                                    <th>Date</th>
+                                    {/* <th>Date</th> */}
                                     <th>Sender Name</th>
-                                    <th>Sender Mail</th>
+									<th>Amount</th>
+									<th>Due Date</th>
+                                    {/* <th>Sender Mail</th> */}
                                     <th>Details</th>
                                 </tr>
                             </thead>
@@ -108,11 +186,24 @@ function Home(userDetails) {
                                 {emails.map((email, index) => (
                                     <tr key={index}>
                                         <td>{email.subject}</td>
-                                        <td>{email.date}</td>
+                                        {/* <td>{email.date}</td> */}
                                         <td>{email.senderName}</td>
-                                        <td>{email.senderMail}</td>
+										<td>₹{extractAmount(email.body)}</td>
+										<td>
+											<div className={
+												calculateDateDifference(extractDueDate(email.body)) < 0
+												? styles.statuscancelled
+												: calculateDateDifference(extractDueDate(email.body)) < 10
+												? styles.statuspending
+												: styles.statusdelivered
+											}>
+												{extractDueDate(email.body)}
+											</div>
+											</td>
+
+										{/* <td>{email.senderMail}</td> */}
                                         <td>
-                                            <button onClick={() => handleDetailsClick(email)}>Details</button>
+                                            <button className={styles.button39} onClick={() => handleDetailsClick(email)}>Details</button>
                                         </td>
                                     </tr>
                                 ))}
@@ -135,7 +226,7 @@ function Home(userDetails) {
                             <p className={styles.date}>
                                 <strong>Sent:</strong> {selectedEmail.date}
                             </p>
-                            <p className={styles.body}>{selectedEmail.body}</p>
+                            <p className={styles.body}>{selectedEmail.body}...</p>
                         </div>
                     </div>
                 </div>

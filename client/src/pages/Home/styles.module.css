@@ -188,6 +188,7 @@ main.table {
 
 table {
     width: 100%;
+    margin-top: 80vh;
 }
 
 td img {
@@ -206,9 +207,6 @@ table, th, td {
 }
 
 thead th {
-    position: sticky;
-    top: 0;
-    left: 0;
     background-color: #d5d1defe;
     cursor: pointer;
     text-transform: capitalize;
@@ -257,21 +255,34 @@ tbody tr.hide td img {
     text-align: center;
 }
 
-.status.delivered {
+.statusdelivered {
+    padding: 0.4rem 0.5rem;
+    border-radius: 2rem;
+    text-align: center;
     background-color: #86e49d;
     color: #006b21;
 }
 
-.status.cancelled {
+.statuscancelled {
+    padding: 0.4rem 0.5rem;
+    border-radius: 2rem;
+    text-align: center;
     background-color: #d893a3;
     color: #b30021;
 }
 
-.status.pending {
+.statuspending {
+    padding: 0.4rem 0.5rem;
+    border-radius: 2rem;
+    text-align: center;
+    color: #412c02;
     background-color: #ebc474;
 }
 
-.status.shipped {
+.statusshipped {
+    padding: 0.4rem 0.5rem;
+    border-radius: 2rem;
+    text-align: center;
     background-color: #6fcaea;
 }
 
@@ -488,4 +499,39 @@ thead th.active,tbody td.active {
   cursor: not-allowed;
   background: rgba(0, 0, 0, .08);
   color: rgba(0, 0, 0, .3);
+}
+
+/* CSS */
+.button39 {
+  background-color: #FFFFFF;
+  border: 1px solid rgb(209,213,219);
+  border-radius: .5rem;
+  box-sizing: border-box;
+  color: #111827;
+  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-size: .875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  padding: .75rem 1rem;
+  text-align: center;
+  text-decoration: none #D1D5DB solid;
+  text-decoration-thickness: auto;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button39:hover {
+  background-color: rgb(249,250,251);
+}
+
+.button39:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.button39:focus-visible {
+  box-shadow: none;
 }
