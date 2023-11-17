@@ -1,0 +1,29 @@
+const amqp = require('amqplib');
+
+async function sendMessage(message , queuename="mailer") {
+  try {
+    const connection = await amqp.connect('amqp://localhost');
+    const channel = await connection.createChannel();
+    const queue = queuename;
+
+    await channel.assertQueue(queue);
+
+    channel.sendToQueue(queue, Buffer.from(message));
+
+    console.log(`[x] Sent '${message}'`);
+
+    setTimeout(() => {
+      connection.close();
+      process.exit(0);
+    }, 500);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+const message = process.argv.slice(2).join(' '); // Capture the arguments passed after "node publisher.js"
+if (message) {
+  sendMessage(message);
+} else {
+  console.error('Please provide a message to send.');
+}
