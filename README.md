@@ -34,7 +34,7 @@ This repository contains assesment for Tensorgo where I was asked to build a inv
         USER_PASSWORD=
      ```
      `Note` I have mentioned the .env file in the submission , kindly copy and paste that
-   4. Whitelisting of mail
+4. ### Whitelisting of mail
       since i am using a unverified version , i am unable to allow any user to login to the application , only the whitelisted usernames will be able to access the application , kindly mail your email id to `cs20b1007@iiitdm.ac.in` so that i can quickly whitelist your email 
 ## Usage
 
