@@ -103,7 +103,7 @@ const handleCustomizedMailSubmit = async () => {
       let temporaryInvoice = { ...newInvoiceData };
   
       // Delete the invoice
-      const deleteResponse = await fetch(`http://localhost:3001/invoices/${invoiceData._id}`, {
+      const deleteResponse = await fetch(`https://invoice-service-liard.vercel.app/invoices/${invoiceData._id}`, {
         method: 'DELETE',
       });
   
@@ -112,7 +112,7 @@ const handleCustomizedMailSubmit = async () => {
       }
   
       // Create a completely new invoice with the same details
-      const recreateResponse = await fetch('http://localhost:3001/invoices', {
+      const recreateResponse = await fetch('https://invoice-service-liard.vercel.app/invoices', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ const handleCustomizedMailSubmit = async () => {
   
   const handleCreateInvoice = async () => {
     try { 
-      const response = await fetch('http://localhost:3001/invoices', {
+      const response = await fetch('https://invoice-service-liard.vercel.app/invoices', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -163,7 +163,7 @@ console.log(">user",user)
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/invoices/${user._json.email}`);
+        const response = await fetch(`https://invoice-service-liard.vercel.app/invoices/${user._json.email}`);
         if (!response.ok) {
           throw new Error('Network response was not ok.');
         }
@@ -388,12 +388,12 @@ console.log(">user",user)
         message="Reminder Sent!"
         severity="success"
       />
-      {/* <CustomSnackbar
+      <CustomSnackbar
         open={customize || schedule}
         onClose={() => { setCustomize(false); setSchedule(false); }}
         message="Coming soon 🧑‍💻"
         severity="info"
-      /> */}
+      />
       <CustomSnackbar
         open={loadingRemind}
         onClose={() => setLoadingRemind(false)}
