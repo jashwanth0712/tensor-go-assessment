@@ -41,7 +41,15 @@ This repository contains assesment for Tensorgo where I was asked to build a inv
    This will start the service host.
 
 Open your browser and visit `http://localhost:3000` for the client application
-
+# what it does 
+Streamline invoice management for SaaS platforms — effortlessly create, track, and send reminders for payments with ease.
+# Architecture
+![](https://github.com/jashwanth0712/tensor-go-assessment/blob/main/client/public/images/flowchart.png?raw=true)
+- Since the features of the assignment given are limited , there was no need to create smaller services , hence I have only created a single service which handles invoices
+- Authentication and session management is completely managed by service-host
+- all the interactions with the database is done through the invoice service
+- service host and invoice service are communicated with message broker rabbitmq
+![](https://github.com/jashwanth0712/tensor-go-assessment/blob/main/client/public/images/message.gif?raw=true)
 # Features
 ### Authentication with Google Oauth
 ![](https://github.com/jashwanth0712/tensor-go-assessment/blob/main/client/public/images/oauth.gif?raw=true)
