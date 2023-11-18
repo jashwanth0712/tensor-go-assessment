@@ -157,6 +157,20 @@ app.get('/invoices/:email/due', async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   });
+  app.get('/payment/:id', async (req, res) => {
+    try {
+      const invoiceId = req.params.id;
+      const invoice = await Invoice.findById(invoiceId);
+  
+      if (!invoice) {
+        return res.status(404).json({ message: 'Invoice not found' });
+      }
+  
+      res.json({ status: invoice.status });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
 // Function to receive messages from RabbitMQ
 async function receiveMessage() {
     try {
