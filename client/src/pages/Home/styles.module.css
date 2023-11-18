@@ -571,3 +571,27 @@ thead th.active,tbody td.active {
 .button9:focus {
   box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset, rgba(50, 50, 93, .2) 0 6px 15px 0, rgba(0, 0, 0, .1) 0 2px 2px 0, rgba(50, 151, 211, .3) 0 0 0 4px;
 }
+.searchContainer{
+    display: flex;
+  flex-wrap: wrap;
+  background: #fff5;
+  gap: 10px;
+  align-items: center;
+}
+.searchInput,
+.inputFields,
+.statusSelect,
+.sortSelect,
+.startDateInput,
+.endDateInput {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.sortLabel,
+.labelStyles,
+.dateLabel {
+  margin-right: 5px;
+  font-weight: bold;
+}

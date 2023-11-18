@@ -35,7 +35,7 @@ function App() {
 					exact
 					path="/"
 					// element={user ? <Home user={auth} /> : <Navigate to="/login" />}
-					element={user ? <Dashboard /> : <Navigate to="/login" />}
+					element={user ? <Dashboard user={auth}/> : <Navigate to="/login" />}
 				/>
 				<Route
 					exact
