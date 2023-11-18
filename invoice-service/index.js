@@ -79,6 +79,7 @@ app.get('/invoices', async (req, res) => {
 // POST a new invoice
 app.post('/invoices', async (req, res) => {
   const invoice = new Invoice({
+    ownerEmail: req.body.ownerEmail,
     recipientEmail: req.body.recipientEmail,
     billAmount: req.body.billAmount,
     dueDate: req.body.dueDate,
@@ -126,7 +127,7 @@ app.delete('/invoices/:id', async (req, res) => {
 app.get('/invoices/:email', async (req, res) => {
     try {
       const email = req.params.email;
-      const invoices = await Invoice.find({ recipientEmail: email });
+      const invoices = await Invoice.find({ ownerEmail: email });
       if (invoices.length === 0) {
         return res.status(404).json({ message: 'No invoices found for this email' });
       }

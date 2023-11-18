@@ -595,3 +595,40 @@ thead th.active,tbody td.active {
   margin-right: 5px;
   font-weight: bold;
 }
+/* In your styles.module.css file or in a separate CSS file */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modalContent {
+    background-color: white;
+    padding: 20px;
+    width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .modalContent label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .modalContent input,
+  .modalContent button {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  

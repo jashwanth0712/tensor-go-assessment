@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const invoiceSchema = new mongoose.Schema({
+  ownerEmail: {
+    type: String,
+    required: true,
+  },
   recipientEmail: {
     type: String,
     required: true,
