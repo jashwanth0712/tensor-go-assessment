@@ -42,3 +42,10 @@ This repository contains assesment for Tensorgo where I was asked to build a inv
 
 Open your browser and visit `http://localhost:3000` for the client application
 
+# Features
+### Authentication with Google Oauth
+![](https://github.com/jashwanth0712/tensor-go-assessment/blob/main/client/public/images/oauth.gif?raw=true)
+### wide range of filters
+![](https://github.com/jashwanth0712/tensor-go-assessment/blob/main/client/public/images/filter.gif)
+### creating new invoice
+![](https://github.com/jashwanth0712/tensor-go-assessment/blob/main/client/public/images/createnew.gif)
