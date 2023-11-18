@@ -17,7 +17,8 @@ const Dashboard = (userDetails) => {
   const [endDate, setEndDate] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
-
+    const [customize,setCustomize]=useState(false);
+    const [schedule,setSchedule]=useState(false);
   const handleHover = () => {
     setShowButtons(true);
   };
@@ -36,6 +37,12 @@ const Dashboard = (userDetails) => {
   const toggleModal = () => {
     setShowModal(!showModal);
   };
+  const handleCustomizeClick=()=>{
+    setCustomize(true)
+  }
+  const handleScheduleClick=()=>{
+    setSchedule(true)
+  }
   const handleRemindClick = async (invoiceData) => {
     try {
       // Extract required fields from the invoice data
@@ -295,6 +302,8 @@ console.log(">user",user)
                   <td>
                   <ButtonGroup
                     invoice={invoice}
+                    handleCustomizeClick={handleCustomizeClick}
+                    handleScheduleClick={handleScheduleClick}
                     handleRemindClick={handleRemindClick}
                     /> 
                   </td>
@@ -324,6 +333,21 @@ console.log(">user",user)
           severity="success"
         >
           Reminder Sent!
+        </MuiAlert>
+      </Snackbar>
+      <Snackbar
+        open={customize||schedule}
+        autoHideDuration={1000} // Adjust as needed
+        onClose={() =>{setCustomize(false);setSchedule(false);}}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} // Adjust position
+        severity="info"
+        >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={() => setLoadingRemind(false)}
+        >
+         Comming soon🧑‍💻
         </MuiAlert>
       </Snackbar>
       <Snackbar

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import styles from '../pages/Home/styles.module.css'; // Import CSS Module
 
-const ButtonGroup = ({ invoice, handleRemindClick }) => {
+const ButtonGroup = ({ invoice,handleCustomizeClick,handleScheduleClick, handleRemindClick }) => {
   const [showButtons, setShowButtons] = useState(false);
 
   const handleHover = () => {
@@ -26,10 +26,10 @@ const ButtonGroup = ({ invoice, handleRemindClick }) => {
           <button onClick={() => handleRemindClick(invoice)} >
             Remind
           </button>
-          <button onClick={() => handleRemindClick(invoice)} >
+          <button onClick={() => handleCustomizeClick(invoice)} >
             Customize
           </button>
-          <button onClick={() => handleRemindClick(invoice)} >
+          <button onClick={() => handleScheduleClick(invoice)} >
             Schedule
           </button>
         </div>
