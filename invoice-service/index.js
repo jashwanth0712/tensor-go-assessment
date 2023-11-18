@@ -165,6 +165,8 @@ app.get('/invoices/:email/due', async (req, res) => {
       if (!invoice) {
         return res.status(404).json({ message: 'Invoice not found' });
       }
+      invoice.status = 'paid';
+      await invoice.save();
   
       res.json({ status: invoice.status });
     } catch (err) {
