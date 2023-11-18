@@ -4,7 +4,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import {formatDate,calculateDateDifference} from '../../components/utils'
 import ButtonGroup from '../../components/buttongroup';
-
+import CustomSnackbar from '../../components/customSnackBar'
 const Dashboard = (userDetails) => {
   const [invoices, setInvoices] = useState([]);
   const [filteredInvoices, setFilteredInvoices] = useState([]);
@@ -19,6 +19,47 @@ const Dashboard = (userDetails) => {
   const [showButtons, setShowButtons] = useState(false);
     const [customize,setCustomize]=useState(false);
     const [schedule,setSchedule]=useState(false);
+    const [subject, setSubject] = useState('');
+const [body, setBody] = useState('');
+
+// Update the state when the subject or body inputs change
+const handleSubjectChange = (e) => {
+  setSubject(e.target.value);
+};
+
+const handleBodyChange = (e) => {
+  setBody(e.target.value);
+};
+
+// Function to handle submit of the customized email modal
+const handleCustomizedMailSubmit = async () => {
+  try {
+    const customizedMailData = {
+      email: "jashwanth0712@gmail.com",
+      subject,
+      body,
+    };
+
+    const response = await fetch('https://hooks.zapier.com/hooks/catch/17050586/3kd6y3d/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ customizedMail: customizedMailData }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to submit customized email.');
+    }
+
+    // Close the modal after successful submission
+    setSubject('');
+    setBody('');
+    setCustomize(false); // Close the modal
+  } catch (error) {
+    console.error('Error submitting customized email:', error);
+  }
+};
   const handleHover = () => {
     setShowButtons(true);
   };
@@ -37,10 +78,12 @@ const Dashboard = (userDetails) => {
   const toggleModal = () => {
     setShowModal(!showModal);
   };
-  const handleCustomizeClick=()=>{
-    setCustomize(true)
+  const handleCustomizeClick=(invoice)=>{
+    console.log(invoice)
+    setCustomize(invoice)
   }
-  const handleScheduleClick=()=>{
+  const handleScheduleClick=(invoice)=>{
+    console.log(invoice)
     setSchedule(true)
   }
   const handleRemindClick = async (invoiceData) => {
@@ -320,50 +363,43 @@ console.log(">user",user)
             </div>
         }
       </main>
-     <Snackbar
+      {customize=="aa" && (
+  <div className={styles.modal}>
+    <label>Subject:</label>
+    <input
+      type="text"
+      value={subject}
+      onChange={handleSubjectChange}
+    />
+
+    <label>Body:</label>
+    <textarea
+      value={body}
+      onChange={handleBodyChange}
+    />
+
+    <button onClick={handleCustomizedMailSubmit}>Submit</button>
+    <button onClick={() => setCustomize(false)}>Cancel</button>
+  </div>
+)}
+      <CustomSnackbar
         open={snackbarOpen}
-        autoHideDuration={1000} // Adjust as needed
         onClose={() => setSnackbarOpen(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} // Adjust position
-      >
-        <MuiAlert
-          elevation={6}
-          variant="filled"
-          onClose={() => setSnackbarOpen(false)}
-          severity="success"
-        >
-          Reminder Sent!
-        </MuiAlert>
-      </Snackbar>
-      <Snackbar
-        open={customize||schedule}
-        autoHideDuration={1000} // Adjust as needed
-        onClose={() =>{setCustomize(false);setSchedule(false);}}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} // Adjust position
+        message="Reminder Sent!"
+        severity="success"
+      />
+      {/* <CustomSnackbar
+        open={customize || schedule}
+        onClose={() => { setCustomize(false); setSchedule(false); }}
+        message="Coming soon 🧑‍💻"
         severity="info"
-        >
-        <MuiAlert
-          elevation={6}
-          variant="filled"
-          onClose={() => setLoadingRemind(false)}
-        >
-         Comming soon🧑‍💻
-        </MuiAlert>
-      </Snackbar>
-      <Snackbar
+      /> */}
+      <CustomSnackbar
         open={loadingRemind}
         onClose={() => setLoadingRemind(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} // Adjust position
+        message="Loading..."
         severity="info"
-        >
-        <MuiAlert
-          elevation={6}
-          variant="filled"
-          onClose={() => setLoadingRemind(false)}
-        >
-         Loading...
-        </MuiAlert>
-      </Snackbar>
+      />
     </div>
   );
 };
