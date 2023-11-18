@@ -19,7 +19,21 @@ This repository contains assesment for Tensorgo where I was asked to build a inv
     cd ../service-host
     npm install
     ```
-
+3. Fill the `.env`
+   - Create `.env` file in tensor-go-assessment/client folder and enter the following path
+     ```bash
+     REACT_APP_API_URL=http://localhost:8080/
+     ```
+   - similarly create `.env` file in tensor-go-assessment/service-host folder and enter the following path
+     ```bash
+        CLIENT_ID=
+        CLIENT_SECRET = 
+        CLIENT_URL = http://localhost:3000/
+        PORT= "8080"
+        USER_EMAIL=
+        USER_PASSWORD=
+     ```
+     `Note` I have mentioned the .env file in the submission , kindly copy and paste that
 ## Usage
 
 1. Run the client:
@@ -53,6 +67,12 @@ Streamline invoice management for SaaS platforms — effortlessly create, track,
 # Features
 ### Authentication with Google Oauth
 ![](https://github.com/jashwanth0712/tensor-go-assessment/blob/main/client/public/images/oauth.gif?raw=true)
+### Zapier Integration
+<div>
+    <img src="https://github.com/jashwanth0712/tensor-go-assessment/blob/main/client/public/images/zapier.png?raw=true" alt="Zapier Integration" width="400" style="display:inline; margin-right:20px;" />
+    <img src="https://github.com/jashwanth0712/tensor-go-assessment/blob/main/client/public/images/mail.png?raw=true" alt="Mail Integration" width="400" style="display:inline;" />
+</div>
+
 ### wide range of filters
 ![](https://github.com/jashwanth0712/tensor-go-assessment/blob/main/client/public/images/filter.gif)
 ### creating new invoice
