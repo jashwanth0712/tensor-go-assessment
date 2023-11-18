@@ -282,7 +282,7 @@ tbody tr.hide td img {
     padding: 0.4rem 0.5rem;
     border-radius: 2rem;
     text-align: center;
-    background-color: #6fcaea;
+    background-color: rgba(255, 255, 255, 0.34)
 }
 
 
@@ -628,6 +628,69 @@ thead th.active,tbody td.active {
     margin-bottom: 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
+  }
+  
+  /* Example styles for vertical dots and popup menu */
+.verticaldots {
+    position: relative;
+
+  }
+  
+  .dotsbutton {
+    font-size: larger;
+    font-weight: bolder;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .popupmenu {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 12px;
+    z-index: 1;
+  }
+  
+  .verticaldots:hover .popup-menu {
+    display: block;
+  }
+  /* ButtonGroup.module.css */
+
+.buttonContainer {
+    position: relative;
+    width: fit-content;
+  }
+  
+  .buttonGroup {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .hiddenButtons {
+ 
+    display: none;
+
+  }
+  
+  .hiddenButtons.visible {
+    display: block;
+  }
+  
+  .hiddenButtons button {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .showOnHover {
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .showOnHover.hide {
+    opacity: 0;
+    pointer-events: none;
   }
   
   

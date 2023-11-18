@@ -1,28 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import styles from "../Home/styles.module.css";
-
-const calculateDateDifference = (dueDate) => {
-  const currentDate = new Date();
-  const parsedDueDate = new Date(dueDate);
-  const differenceMs = parsedDueDate - currentDate;
-  const differenceDays = Math.floor(differenceMs / (1000 * 60 * 60 * 24));
-  return differenceDays;
-};
-
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  return date.toISOString().split('T')[0]; // Extracts only the date part
-};
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import {formatDate,calculateDateDifference} from '../../components/utils'
+import ButtonGroup from '../../components/buttongroup';
 
 const Dashboard = (userDetails) => {
   const [invoices, setInvoices] = useState([]);
   const [filteredInvoices, setFilteredInvoices] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); 
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // State to manage snackbar visibility
   const [selectedStatus, setSelectedStatus] = useState('all');
   const [sortOrder, setSortOrder] = useState('asc');
+  const [loadingRemind, setLoadingRemind] = useState(false); 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showButtons, setShowButtons] = useState(false);
+
+  const handleHover = () => {
+    setShowButtons(true);
+  };
+
+  const handleLeave = () => {
+    setShowButtons(false);
+  };
   const [newInvoiceData, setNewInvoiceData] = useState({
     recipientEmail: '',
     dueDate: '',
@@ -34,7 +36,50 @@ const Dashboard = (userDetails) => {
   const toggleModal = () => {
     setShowModal(!showModal);
   };
-
+  const handleRemindClick = async (invoiceData) => {
+    try {
+      // Extract required fields from the invoice data
+      const { ownerEmail, recipientEmail, billAmount, dueDate } = invoiceData;
+      setLoadingRemind(true); 
+      // Recreate a new object with the required fields and the same key names
+      const newInvoiceData = {
+        ownerEmail,
+        recipientEmail,
+        billAmount,
+        dueDate,
+      };
+  
+      // Store the new invoice data in a temporary variable
+      let temporaryInvoice = { ...newInvoiceData };
+  
+      // Delete the invoice
+      const deleteResponse = await fetch(`http://localhost:3001/invoices/${invoiceData._id}`, {
+        method: 'DELETE',
+      });
+  
+      if (!deleteResponse.ok) {
+        throw new Error('Failed to delete invoice.');
+      }
+  
+      // Create a completely new invoice with the same details
+      const recreateResponse = await fetch('http://localhost:3001/invoices', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(temporaryInvoice),
+      });
+      setSnackbarOpen(true); 
+      if (!recreateResponse.ok) {
+        throw new Error('Failed to recreate invoice.');
+      }
+      setLoadingRemind(false); 
+      // Logic to refresh or update the invoice data after recreation
+    } catch (error) {
+      console.error('Error handling reminder:', error);
+    }
+  };
+  
   const handleCreateInvoice = async () => {
     try { 
       const response = await fetch('http://localhost:3001/invoices', {
@@ -129,7 +174,7 @@ console.log(">user",user)
   return (
     <div>
       <h1>Invoices</h1>
-      <main className={styles.table}>
+          <main className={styles.table}>
           <div style={{margin:"10px",backgroundColor:"#fff5"}} className={styles.searchContainer}>
       <input
         type="text"
@@ -227,7 +272,9 @@ console.log(">user",user)
                   <td>₹{invoice.billAmount}</td>
                   <td>
                   <div className={
-                        calculateDateDifference(invoice.dueDate) < 0
+                    invoice.status=='paid'
+                        ?styles.statusshipped  
+                        :calculateDateDifference(invoice.dueDate) < 0
                         ? styles.statuscancelled
                         : calculateDateDifference(invoice.dueDate) < 10
                         ? styles.statuspending
@@ -246,11 +293,10 @@ console.log(">user",user)
                     </div>
                     </td>
                   <td>
-                    {invoice.status=='not paid'?
-                    <button>Remind</button>
-                    :    
-                    <button>Get reciept</button>
-                }
+                  <ButtonGroup
+                    invoice={invoice}
+                    handleRemindClick={handleRemindClick}
+                    /> 
                   </td>
                 </tr>
               ))}
@@ -265,6 +311,35 @@ console.log(">user",user)
             </div>
         }
       </main>
+     <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={1000} // Adjust as needed
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} // Adjust position
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={() => setSnackbarOpen(false)}
+          severity="success"
+        >
+          Reminder Sent!
+        </MuiAlert>
+      </Snackbar>
+      <Snackbar
+        open={loadingRemind}
+        onClose={() => setLoadingRemind(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} // Adjust position
+        severity="info"
+        >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={() => setLoadingRemind(false)}
+        >
+         Loading...
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 };

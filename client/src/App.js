@@ -39,12 +39,18 @@ function App() {
 				/>
 				<Route
 					exact
+					path="/user"
+					element={user ? <Home user={auth} /> : <Navigate to="/signup" />}
+					// element={user ? <Dashboard user={auth}/> : <Navigate to="/login" />}
+				/>
+				<Route
+					exact
 					path="/login"
 					element={user ? <Navigate to="/" /> : <Login />}
 				/>
 				<Route
 					path="/signup"
-					element={user ? <Navigate to="/" /> : <Signup />}
+					element={user ? <Navigate to="/user" /> : <Signup />}
 				/>
 			</Routes>
 		</div>
