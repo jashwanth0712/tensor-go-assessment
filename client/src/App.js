@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import "./App.css";
@@ -33,7 +34,8 @@ function App() {
 				<Route
 					exact
 					path="/"
-					element={user ? <Home user={auth} /> : <Navigate to="/login" />}
+					// element={user ? <Home user={auth} /> : <Navigate to="/login" />}
+					element={user ? <Dashboard /> : <Navigate to="/login" />}
 				/>
 				<Route
 					exact

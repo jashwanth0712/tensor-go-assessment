@@ -155,9 +155,16 @@ function Home(userDetails) {
     return (
         <div >
 			<div >
-				
 			</div>
-            {isLoading && <h1>Loading...</h1>}
+            {isLoading ? 
+            <h1>Loading...</h1>
+            :
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <h1>All invoices</h1>
+                <button  className={styles.button9}>tensorgo invoices</button>
+            </div>
+
+}
             {emails.length === 0 && !isLoading && (
                 <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                     <h1 style={{ fontSize: "8rem" }}>😅</h1>
@@ -167,6 +174,7 @@ function Home(userDetails) {
                     </button>
                 </div>
             )}
+  
             {!selectedEmail && emails.length > 0 && (
                 <main className="table" >
                     <section className="table__body">

@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const cors = require("cors");
 const amqp = require('amqplib');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +19,13 @@ db.once('open', () => {
 });
 
 app.use(express.json());
+app.use(
+	cors({
+		origin: "http://localhost:3000",
+		methods: "GET,POST,PUT,DELETE",
+		credentials: true,
+	})
+);
 
 // Invoice Schema
 const Invoice = require('./models/invoice');
@@ -162,8 +170,9 @@ async function receiveMessage() {
         if (msg !== null) {
           const receivedMessage = msg.content.toString();
           console.log(`[x] Received '${receivedMessage}'`);
-  
-          if (receivedMessage === 'get-invoices') {
+          const Message = JSON.parse(receivedMessage);
+        console.log("recieved query: ",Message)
+          if (Message && Message.query === 'get-invoices') {
             // If received message is 'get-invoices', fetch and publish invoices
             try {
               const invoices = await Invoice.find(); // Fetch invoices (assuming Invoice is your Mongoose model)
@@ -195,15 +204,11 @@ async function receiveMessage() {
   
       console.log(`[x] Sent '${message}'`);
   
-      setTimeout(() => {
-        connection.close();
-        process.exit(0);
-      }, 500);
     } catch (error) {
       console.error('Error:', error);
     }
   }
-receiveMessage();
-app.listen(PORT, () => {
+  app.listen(PORT, () => {
+    receiveMessage();
   console.log(`Server is running on port ${PORT}`);
 });
